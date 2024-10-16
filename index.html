@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craft My Plate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            background-color: #f109d6; 
+            color: rgb(0, 0, 0); 
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: rgb(0, 0, 0); 
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+        }
+        .logo-container {
+            flex: 0 1 200px;
+            text-align: center;
+        }
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .category, .form-group {
+            margin-bottom: 15px;
+        }
+        .category h2, label {
+            font-size: 1.2em;
+            color: #333; 
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+            cursor: pointer;
+        }
+        .category label {
+            font-size: 1em;
+            color: #666; 
+        }
+        .category input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .category .items {
+            display: none;
+            padding-left: 20px;
+        }
+        select, input[type="text"], button {
+            width: 100%;
+            padding: 8px;
+            font-size: 0.9em;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            color: black;  /* Changed to black */
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #selectedDishesContainer {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        #selectedDishes {
+            position: relative;
+            font-size: 1.2em;
+            color: #333;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .copy-button {
+            font-size: 0.8em;
+            background: none;
+            border: none;
+            color: #008CBA;
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            color: #007B9E;
+        }
+        #orderCodeContainer {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffecb3;
+            margin-top: 15px;
+        }
+        #orderCode {
+            font-size: 1.1em;
+            color: #333;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: rgb(0, 0, 0);  
+        }
+        td {
+            color: rgb(0, 0, 0);  
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Craft My Plate Menu</b></h1>
+    <div class="container">
+        <div class="form-container">
+            <h2>Select the dishes</h2>
+            <form id="dishForm">
+                <div class="category">
+                    <h2 onclick="toggleItems('appetizers')">Appetizers</h2>
+                    <div id="appetizers" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('accompaniments')">Accompaniments</h2>
+                    <div id="accompaniments" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Baked / Fried Snacks')">Baked / Fried Snacks</h2>
+                    <div id="Baked / Fried Snacks" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Baked / Grilled Snacks')">Baked / Grilled Snacks</h2>
+                    <div id="Baked / Grilled Snacks" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Beverages')">Beverages</h2>
+                    <div id="Beverages" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Biryani')">Biryani</h2>
+                    <div id="Biryani" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Biryani/Pulav')">Biryani/Pulav</h2>
+                    <div id="Biryani/Pulav" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Curries')">Curries</h2>
+                    <div id="Curries" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Dal')">Dal</h2>
+                    <div id="Dal" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Desserts')">Desserts</h2>
+                    <div id="Desserts" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Desserts/Paan')">Desserts/Paan</h2>
+                    <div id="Desserts/Paan" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Dips')">Dips</h2>
+                    <div id="Dips" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Flavored Rice')">Flavored Rice</h2>
+                    <div id="Flavored Rice" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Fresh Baked')">Fresh Baked</h2>
+                    <div id="Fresh Baked" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Fresh Grind Chutney (Pachadi)')">Fresh Grind Chutney (Pachadi)</h2>
+                    <div id="Fresh Grind Chutney (Pachadi)" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Fresh Pickles')">Fresh Pickles</h2>
+                    <div id="Fresh Pickles" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Fruits')">Fruits</h2>
+                    <div id="Fruits" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Fry')">Fry</h2>
+                    <div id="Fry" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Grilled')">Grilled</h2>
+                    <div id="Grilled" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Hot')">Hot</h2>
+                    <div id="Hot" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Icecreams')">Icecreams</h2>
+                    <div id="Icecreams" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Live Station')">Live Station</h2>
+                    <div id="Live Station" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Liquids')">Liquids</h2>
+                    <div id="Liquids" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Mains')">Mains</h2>
+                    <div id="Mains" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Paan')">Paan</h2>
+                    <div id="Paan" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Potatos/Fried Snacks')">Potatos/Fried Snacks</h2>
+                    <div id="Potatos/Fried Snacks" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Refreshments')">Refreshments</h2>
+                    <div id="Refreshments" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Salad')">Salad</h2>
+                    <div id="Salad" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Salads/Fruits')">Salads/Fruits</h2>
+                    <div id="Salads/Fruits" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Sides')">Sides</h2>
+                    <div id="Sides" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Sides & Beverages')">Sides & Beverages</h2>
+                    <div id="Sides & Beverages" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Soups')">Soups</h2>
+                    <div id="Soups" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Special Rice')">Special Rice</h2>
+                    <div id="Special Rice" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Special Rice/Bread')">Special Rice/Bread</h2>
+                    <div id="Special Rice/Bread" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Special Rice/Noodles')">Special Rice/Noodles</h2>
+                    <div id="Special Rice/Noodles" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Special Rice/Noodles/Bread')">Special Rice/Noodles/Bread</h2>
+                    <div id="Special Rice/Noodles/Bread" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Standards')">Standards</h2>
+                    <div id="Standards" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Starters')">Starters</h2>
+                    <div id="Starters" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Sweets')">Sweets</h2>
+                    <div id="Sweets" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Sweets & Fruits')">Sweets & Fruits</h2>
+                    <div id="Sweets & Fruits" class="items"></div>
+                </div>
+                <div class="category">
+                    <h2 onclick="toggleItems('Welcome Drinks')">Welcome Drinks</h2>
+                    <div id="Welcome Drinks" class="items"></div>
+                </div>
+
+                <button type="button" onclick="submitDishes()">Submit</button>
+            </form>
+        </div>
+        <div class="logo-container">
+            <img src="https://raw.githubusercontent.com/bhuvi003/Craft-My-Plate-/main/Untitled-removebg-preview.png" alt="Craft My Plate">
+        </div>
+        <div class="form-container">
+            <h2>Order Form</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="categoryOrder">Category of Order</label>
+                    <select id="categoryOrder" name="categoryOrder">
+                        <option value="DB">DB</option>
+                        <option value="MB">MB</option>
+                        <option value="SO">SO</option>
+                        <option value="BF">BF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="typeOrder">Type of Order</label>
+                    <select id="typeOrder" name="typeOrder">
+                        <option value="L">L</option>
+                        <option value="D">D</option>
+                        <option value="BF">BF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="orderId">Order ID</label>
+                    <input type="text" id="orderId" name="orderId">
+                </div>
+                <button type="button" onclick="generateOrderCode()">Generate Order Code</button>
+            </form>
+        </div>
+    </div>
+    <div id="selectedDishesContainer">
+        <div id="selectedDishes">
+            <p align="left">Craft My Plate</p>
+            <div id="selectedDishesTableContainer"></div>
+            <div id="orderCodeContainer">
+                <div id="orderCode"></div>
+            </div>
+            <button class="copy-button" onclick="copyToClipboard()">Copy <i class="fas fa-copy"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const categories = {
+            appetizers: [
+                "Baby Corn Chilli", "Gobi Manchuria", "Paprika Chicken", "Chicken Lollipop",
+                "Chilli Paneer", "Schezwan Pepper Fish", "Achari Paneer Tikka", "Gongura Mamsam",
+                "Pachi Mirchi Kodi Kebab", "Andhra Mutton Fry", "Veg Manchuria", "Zafrani Fish Tikka",
+                "Chicken 65", "Kaju Chicken Pakoda", "Chilli Chicken", "Murgh Malai Kebab",
+                "Malai Brocolli", "Peri Peri Chicken", "Chandava Fish Fry", "Mushroom 65",
+                "NONVEG Spring Rolls", "Ulavacharu Chicken Fry", "Baby Corn 65", "Chicken Tikka",
+                "Chicken Nuggets", "Mint Chicken Fry", "Sesame Fried Chicken", "Crispy Corn",
+                "Achari Chicken Tikka", "Apollo Fish", "Pepper Mutton", "Chicken Reshmi Kebab",
+                "Malai Paneer Tikka", "Dragon Chilli Chicken", "Ulavacharu Chicken Fry Boneless",
+                "Chicken 555", "Chicken Manchuria", "Chilli Garlic Fish", "NONVEG Spring Rolls",
+                "Paneer Kurkure", "Andhra Chicken Fry", "Achari Fish Tikka", "Veg Spring Rolls",
+                "French Fries", "Gobi 65", "Mutton Chilli", "Chicken Samosa", "Shanghai Chicken",
+                "Paneer Majestic", "Ginger Coriander Fish", "Chicken Drumstick", "Paneer Tikka",
+                "Mutton Ghee Roast", "Chilli Mushroom", "Chicken Majestic", "Pepper Fish",
+                "Layer Chicken Fry", "Malai Chicken Tikka", "Veg Hara Bara Kebab", "Mutton 65"
+            ],
+            accompaniments: [
+                "Buffet Plate", "Cabbage Fry", "Curd", "Curd Chillies", "Cutlery", "Cutlery & Disposables",
+                "Fryums", "Ghee", "Green Salad", "Majjiga Charu", "Mayonnaise", "Mirchi Ka Salan",
+                "Miriyala Rasam", "Nachos Dip", "Pachi Pulusu", "Packed Fruit Juice", "Papad", "Pappucharu",
+                "Pickle", "Podi", "Pudina Chutney (Mint)", "Raitha", "Red Sweet Chutney", "Roti Pachadi",
+                "Salad", "Sambar", "Snacks Plate", "Steamed Rice", "Tissues", "Tomato Ketchup",
+                "Tomato Rasam", "Water Bottle"
+            ],
+            "Baked / Fried Snacks": [
+                "Potato Chips", "Onion Samosa", "Aloo Samosa", "Veg Spring Rolls", "Chicken Puff",
+                "Egg Puff", "Kachori", "Corn Samosa"
+            ],
+            "Baked / Grilled Snacks": [
+                "Chicken Puff", "Egg Puff", "Veg Puff", "Garlic Bread", "Veg Sandwich", "Nachos", "Veg Burger"
+            ],
+            Beverages: [
+                "Tea", "Lime Juice with Chia Seeds & Mint", "Orange Juice", "Pomegranate Juice", "Lassi",
+                "Fresh Fruit Juice", "Packed Juice", "Lime Juice With Chia Seeds & Mint", "Beetroot Juice",
+                "Coffee", "Watermelon Juice", "Cold Coffee", "Ragi Malt", "Jaggery Coffee", "Apple Juice",
+                "Jaggery Tea", "Masala Chai", "Carrot Juice", "Mix Fruit Juice", "Guava Juice",
+                "Vanilla Milkshake", "Mango Juice", "Butter Milk"
+            ],
+            Biryani: [
+                "Mutton Dum Biryani", "Veg Dum Biryani", "Prawns Biryani", "Mughalai Chicken Biryani",
+                "Chicken Dum Biryani", "Gongura Mutton Biryani", "Chicken Chettinad Biryani",
+                "Paneer Biryani", "Veg Mughalai Biryani", "Fried Piece Chicken Biryani", "Mushroom Biryani",
+                "Avakai Chicken Biryani", "Veg Biryani", "Ulavacharu Chicken Biryani", "Biryani Rice",
+                "Egg Biryani", "Zafrani Veg Biryani", "Mutton Kheema Biryani", "Panaspottu Biryani",
+                "Special Chicken Biryani (Boneless)"
+            ],
+            "Biryani/Pulav": [
+                "Mutton Fry Piece Pulav", "Jeera Rice", "Mutton Dum Biryani", "Paneer Pulav", "Prawn Biryani", 
+                "Veg Pulav", "Meal Maker Pulav", "Corn Kaju Pulav", "Matar Paneer Pulav", "Veg Fried Rice", 
+                "Panasakaya Biryani (Jackfruit)", "Chicken Dum Biryani", "Natukodi Pulav", "Kaju Ghee Rice", 
+                "Corn Peas Pulav", "Veg Biryani", "Kaju Paneer Biryani", "Mutton Kheema Biryani", 
+                "Green Peas Pulav", "Mixed Non-veg Pulav", "Chicken Fry Piece Pulav", "Gongura Mutton Pulav", 
+                "Chicken Fry Piece Biryani", "Paneer Biryani", "Mushroom Biryani"
+            ],
+            Curries: [
+                "Chicken Chettinad", "Egg kheema", "Veg Manchuria Gravy", "Kaju Paneer Curry", "Prawns Curry", 
+                "Prawns Iguru", "Dal Makhani", "Paneer Butter Masala", "Andhra Prawns Curry", "Chicken Tikka Masala", 
+                "Scrambled Egg Curry", "Gongura Mutton Curry", "Gutti Vankaya Curry", "Paneer Tikka Masala", "Boiled Egg Curry", 
+                "Butter Chicken Curry", "Kadai Paneer", "Paneer Chatpata", "Paneer Bhurji", "Egg Bhurji", 
+                "Ulavacharu Gutti Vankaya Curry", "Murg Musallam", "Egg masala", "Kattaparegalu Pulusu", "Kadai Veg", 
+                "Pesara Punugulu Curry", "Aloo Chana Masala", "Aloo Jeera", "Fish Pulusu", "Tomato Kaju Curry", 
+                "Methi Chaman", "Egg Pulusu", "Cashew Chicken Curry", "Aloo Gobi Masala", "Palak Paneer", 
+                "Mutton Rogan Josh Curry", "Dhum Aloo", "Paneer Bhurji", "Chicken Chettinadu", "Chana Masala", 
+                "Mutton Kheema Curry", "Rajma Curry", "Mango Chicken Curry", "Methi Chicken", "Ulavacharu Gutti Vankya", 
+                "Bendi do pyaza", "Mushroom Curry", "Mushroom Masala", "Malai Kofta Curry", "Green Peas Curry", 
+                "Mutton Curry", "Andhra Chicken Curry", "Mugalai Chicken Curry", "Chicken Manchuria Gravy", "Mushroom Capsicum", 
+                "Kadai Chicken", "Veg Kurma", "Koramenu Fish Pulusu", "Andhra Chicken Curry Boneless", "Baigan Bartha", 
+                "Fish Curry", "Rajma Masala", "Prawns Masala", "Kadai Mushroom", "Dal Tadka", 
+                "Natu Kodi Curry", "Mixed vegetable"
+            ],
+            Dal: [
+                "Chintakaya Pappu", "Methi Dal", "Gongura Pappu", "Palakura Pappu", "Dal Makhani", 
+                "Beerakaya Pappu", "Thotakura Pappu", "Yellow Dal Tadka", "Sorakaya Pappu", 
+                "Mamidikaya Pappu (Mango)", "Tomato Pappu", "Vankaya Pappu", "Dal Tadka", "Mudda Pappu"
+            ],
+            Desserts: [
+                "Cupcake", "Semiya Payasam (Kheer)", "Biscoff Tres Leches", "Bobbatlu", "Angoori Rasmalai", 
+                "Dry Fruit Pongal", "Assorted Mousse", "Tiramisu", "Dry Fruit Pootarekulu", "Brownie", 
+                "Dry Fruit Moongdal Halwa", "Motichoor Laddu", "Baked Gulab Jamun", "Swiss Roll", "Qurbani ka Meeta", 
+                "Phirni", "Assorted Muffins", "Cham Cham", "Chocolate Walnut Brownie", "Plain Cake", 
+                "Carrot Halwa", "Rasmalai", "Gulab Jamun", "Ariselu", "Chocolate Lava Cake", "Chocolate Éclair", 
+                "Poornam", "Pastry", "Gummadikaya Halwa", "Jalebi with rabdi", "Sabudhana Kheer", 
+                "Junnu", "Osmania Biscuits", "Rasagulla", "Bread Butter Pudding", "Fruit Rabdi", 
+                "Red Velvet Cake", "Hot Chocolate Fudge", "Apricot Delight", "Cookies", "Apricot Pudding", 
+                "Gulab Jamun", "Paramannam (Sweet Pongal)", "Carrot Cake", "Caramel Custard", "Double Ka Meetha", 
+                "Fruit Custard", "Jalebi", "Basundi", "Kaddu Ka Kheer", "Kesari Bath", 
+                "Chocolate Brownie", "Mango Pudding", "Assorted Pastries", "Khubani Ka Meetha", "Kala Jamun", 
+                "Tres Leches", "Moong Dal Halwa", "Kesar Rasmalai", "Pootarekulu", "Baked Rasagulla", 
+                "Sorakay Halwa", "Flavoured Tarts", "Sitaphal Rasmalai", "Crème Brulee", "Souffle"
+            ],
+            "Desserts/Paan": [
+                "Vanilla Ice Cream", "Mango Ice Cream", "Strawberry Ice Cream", "Apricot Delight", 
+                "Butter Scotch Ice Cream", "Sweet Pan"
+            ],
+            Dips: [
+                "Sour cream Dip", "Jam", "Tomato Ketchup", "Hummus Dip", "Garlic Mayonnaise Dip", 
+                "Musturd Dip", "Maple Syrup", "Honey", "Tandoori Mayo", "Mayonnaise Dip"
+            ],
+            "Flavored Rice": [
+                "Pappu Charu Annam", "Layer Chicken Mughalai Pulao", "Gongura Rice", "Mughalai Prawns Pulao", 
+                "Mughalai Egg Pulao", "Jeera Rice", "Bagara Rice", "Kaju Ghee Rice", "Egg Soft Noodles", 
+                "Curd Rice", "Egg Fried Rice", "Gongura Kodi Pulao", "Gongura Veg Pulao", "Muddapappu Avakaya Rice", 
+                "Chicken Joint Pulao", "Prawns Fried Piece Pulao", "Coconut Rice", "Chicken Noodles", 
+                "Veg Pulao", "Mati Kodi Pulao", "Sambar Rice", "Layer Chicken Fried Piece Pulao", "Veg Fried Rice", 
+                "Chicken Schezwan Fried Rice", "Veg Schezwan Fried Rice", "Mutton Mughalai Pulao", "Chicken Schezwan Noodles", 
+                "Veg Schezwan Noodles", "Chicken Sambar Rice", "Mutton Kheema Pulao", "Chicken Fried Rice"
+            ],
+            "Fresh Baked": [
+                "Sour Dough Toast", "Cookies", "Bread Toast", "Garlic Bread Toast", "Pancakes", 
+                "Chocolate Brownie", "Multigrain Bread Toast", "Muffins", "Brown Bread Toast"
+            ],
+            "Fresh Grind Chutney (Pachadi)": [
+                "Pachi Tomato Chutney", "Dondakaya Kobbari Chutney", "Potlakaya Chutney", "Tomato Pachadi", 
+                "Carrot", "Tomato Dosakaya Mukkala Chutney", "Kottimera", "Sorakaya", "Dosakay Chutney", 
+                "Gongura Onion Chutney", "Coconut Pachadi", "Chukka Koora Chutney", "Beerakaya Pachadi", 
+                "Pudina", "Sorakaya Tomato Chutney", "Vankaya Pachadi", "Beerakaya Dondakaya Pachadi", 
+                "Andhra Gongura", "Tomato Kotimeera", "Dondakay Chutney"
+            ],
+            "Fresh Pickles": [
+                "Tomato Pachadi", "Cabbage Pachadi", "Gongura Pachadi", "Dondakaya Pachadi", 
+                "Beerakaya Pachadi", "Pudina Pachadi"
+            ],
+            Fruits: [
+                "Pineapple", "Watermelon", "Apple", "Guava", "Muskmelon", "Pear", "Green Apple", 
+                "Grapes", "Papaya", "Orange", "Seasonal Mixed Fruit", "Banana", "Sapota"
+            ],
+            Fry: [
+                "Dondakaya Fry", "Bhindi Fry", "Cut Mirchi Fry", "Gobi 65", "Panasapottu Fry", 
+                "Bendi Peanut Fry", "Bendi Kaju Fry", "Thotakura Liver Fry", "Chamagadda Chips", 
+                "Mushroom Fry", "Chilakada Dhumpa Fry", "Kakarakaya Fry", "Nuvvula Vankaya Fry", 
+                "Capsicum Pakodi", "Chamagadda Fry", "Raw Banana Fry", "Aloo Fry", 
+                "Cabbage 65", "Cabbage Fry", "Muvva Vankaya Fry"
+            ],
+            Grilled: [
+                "Sauteed Grilled Chicken Sausage", "Grilled Paneer", "Bacon", "Grilled Cottage Cheese", 
+                "Chicken Sausage", "Chicken Cheese Sausage", "Grilled Chicken", "Grilled Fish"
+            ],
+            Hot: [
+                "Hara Bara Kebab", "Alasanda Vada", "Mirchi Bajji", "Veg Bullet", "Veg Samosa", 
+                "Veg Spring Roll", "Masala Vada", "Cut Mirchi"
+            ],
+            Icecreams: [
+                "Mint", "Caramel Nuts", "Tutty Fruity", "Butter Scotch", "Malai Kulfi", 
+                "Black Current", "Kesar Pista", "Anjeer Badam", "Green Pista", "Chocolate", 
+                "Choco Chips", "Kaju Kismis", "Strawberry", "Vanilla"
+            ],
+            Liquids: [
+                "Pappu Charu", "Daniya Rasam", "Tomato Rasam", "Chintapandu Rasam", "Kothimera Rasam", 
+                "Velluli Rasam", "Pacchi Pulusu", "Pachi Pulusu", "Lemon Pappucharu", "Nimakaya Rasam", 
+                "Sambhar", "Mulakaya Pappucharu", "Miryala Rasam", "Gummadikaya Pulusu"
+            ],
+            "Live Station": [
+                "Pizza Station NONVEG", "Poori Counter", "Live Chaat Counter", "Thai Station Veg", 
+                "Pasta Station", "Burger Station NONVEG", "Podi Rice Station", "Pasta Station NONVEG", 
+                "Mongolian Station", "Stone Icecream", "Pizza Station", "Chole Bhature Station", 
+                "Chinese Noodles and Fried Rice Counter", "Shawarma Station", "Mexican Station NONVEG", 
+                "Mongolian Station NONVEG", "Burger Station Veg", "Sambhar Rice Counter", "Roti Live Station", 
+                "Pulka Live Station", "Thai Station NONVEG", "Dosa Counter", "Mexican Station"
+            ],
+            Mains: [
+                "Mysore Bonda", "Millet Upma", "Pulihora", "Pongal", "French Toast", "Aloo Samosa", "Punugulu", "Sabudana Vada", "Poha", "Bread Omelette", "Semiya Upma", 
+                "Onion Pakoda", "Samiya Upma", "Kachori", "Samosa", "Pav Bhaji (With 1 Pav)", "Vada", "Masala Omlette", "Khaman Dhokla", "Bhatura 6", "Medu Vada", "Chapathi", 
+                "Millet Idli", "Veg Wrap", "Idly", "Chicken Sandwich", "Bread Pakoda", "Veg Sandwich", "Multigrain Roti 5''", "Aloo Paratha 6''", "Poori 4''", "Chitti Gare", 
+                "Veg Sandwich", "Over-Hard Fried Egg", "Rava Khichdi", "Millet Poori 4''", "Bisi Bela Bath", "Chicken Omelette", "Sabudana Khichdi", "Scrambled Egg", "Onion Bonda", 
+                "Millet Khichdi", "Veg Spinach Omelette", "Vada Pav", "Dosa", "Millet Vada", "Mushroom Omelette", "Masala Omelette", "Upma", "Kesari Bath", "French Omelette", 
+               "Boiled Egg", "Millet Pongal", "Chicken Wrap", "Palak Poori 4"
+            ],
+            Paan: [
+            "Sada Paan", "Meetha Paan", "Meenakshi Paan", "Regular"
+            ],
+            "Potatos/Fried Snacks": [
+                "Jalapeno Bites", "Hash Brown", "Peri Peri Fries", "Chicken Nuggets", "Fish Fingers", "Mashed Potatoes", "Cheese Fries", "Potato Skins", "French Fries"
+            ],
+            Refreshments: [
+                "Green Apple Mojito", "Strawberry Milkshake", "Soft Drinks", "Bubble Gum Temptation", "Lavender Cooler", "Orange Basil Delight", "Lassi", 
+                "Pineapple Juice", "Blue Margarita", "Fruit Punch", "Strawberry Delight", "Virgin Mojito", "Badam Milk Hot", "Blue Angel", "Orange Juice", "Vanilla Milkshake", 
+                "Masala Buttermilk", "Seasonal Fresh Fruit Juice", "Watermelon Mojito", "Lemonade", "Blueberry Punch", "Pina Colada", "Grape", "Jaljeera", "Raspberry Twist", 
+                "Mint Blast Mojito", "Badam Milk Cold", "Fresh Lime Soda", "Kiwi Delight", "Buttermilk", "Orange Blossom"
+            ],
+            Salad: [
+                "Green Salad", "Caesar Salad", "Greek Salad", "Pasta Salad", "Fruit Salad"
+            ],
+            "Salads/Fruits": [
+                "Seasonal Mixed Fruit", "Baked Beans", "Banana", "Papaya", "Seasonal Mixed Fruit", "Caesar Salad", "Watermelon", "Sauteed Vegetables", "Banana",  "Green Salad", 
+                "Greek Salad", "Sauteed Mushrooms"
+            ],
+            Sides: [
+                "Curd", "Aloo Curry", "Paramannam (Sweet Pongal)", "Coriander Chutney", "Nalla Karam Podi", "Coconut Chutney", "Ghee", "Podi", "Bombay Chutney", "Aloo Matar", 
+                "Boondi Raitha", "Sambar", "Salad", "Peanut Chutney", "Allam Chutney (Ginger)", "Chole Curry", "Aloo Khurma", "Raitha", "Egg Bhurji", "Chicken Curry", 
+                "Tomato Chutney", "Mirchi Ka Salan", "Red Sweet Chutney", "Tea", "Aloo Matar", "Peanut Podi", "Pudina Chutney (Mint)", "Pickle", "Gajar Ka Halwa", "Chana Masala"
+            ],
+            "Sides & Beverages": [
+                "Allam Chutney (Ginger)", "Tomato Chutney", "Coconut Chutney", "Coriander Chutney", "Coffee", "Tea", "Sambar", "Peanut Chutney"
+
+            ],
+            Soups: [
+                "Lamb Broth", "Chicken Manchow", "Mutton Marag", "Cream of Spinach", "Hot and Sour NONVEG", "Khozi Rasam", "Cream of Chicken", "Chicken Broth", "Chicken Sweet Corn", 
+                "Cream Of Tomato", "Mutton Yakhni Shorba", "Hot and Sour Veg", "Cream of Chicken and Mushroom", "Cream of Broccoli", "Lemon Coriander", "Tomato Daniya Shorba", "Mutton Badam Shorba", 
+                "Veg Manchow", "Cream Of Mushroom", "Lemon Grass Chicken", "Sweet Corn", "Mutton Paya", "French Onion", "Chicken Coriander"
+            ],
+            "Special Rice": [
+               "Pudina Rice", "Veg Fried Rice", "Jeera Rice", "Curd Rice", "Steamed Rice", "Temple Style Pulihora", "Pappucharu Annam", "Tomato Rice", 
+               "Gongura Rice", "Kaju Ghee Rice", "Coconut Rice", "Muddapappu Avakaya Annam", "Sambar Rice"
+            ],
+            "Special Rice/Bread": [
+            "Gongura Rice", "Pulka 4''", "Curd Rice", "Sambar Rice", "Pappucharu Annam", "Muddapappu Avakaya Annam"
+            ],
+            "Special Rice/Noodles": [
+            "Curd Rice", "Sambar Rice", "Steamed Rice", "Chicken Fried Rice", "Veg Soft Noodles", "Bagara Rice", "Muddapappu Avakaya Annam", "Pappucharu Annam", "Ragi Sangati", 
+            "Jeera Rice", "Veg Fried Rice", "Kaju Ghee Rice", "Curd Rice", "Gongura Rice", "Chicken Soft Noodles"
+            ],
+            "Special Rice/Noodles/Bread": [
+                 "Sambar Rice", "Chicken Fried Rice", "Veg Fried Rice", "Muddapappu Avakaya Annam", "Pappucharu Annam", "Chicken Soft Noodles", 
+            "Curd Rice", "Veg Soft Noodles", "Pulka"
+            ],
+            Standards: [
+                "Live Counter Ice Cream", "Raita", "Live Counter Flavoured Rice", "Two Types of Podi", "Ulavacharu With Cream", "Assorted Pickles-2", "Mirchi Ka Salan", 
+                "Live Counter Pulka", "Plain Curd", "Fresh Ghee", "Curd", "Chillies", "Branded Water Bottles", "Live Counter Bread", "South Indian Papads and Vadiyalu", "Live Counter Pan", "Rice"
+            ],
+            Starters:[
+                "Crispy Corn", "Prawns 65", "Egg Manchurian", "Mutton Ghee Roast", "Pepper Chicken (Oil Fry)", "Veg Samosa", "Apollo Fish (Oil Fry)", "Malai Paneer Tikka", 
+                "Lemon Chicken", "Chicken Manchurian", "Pepper Mutton", "Gobi 65", "Baby Corn 65", "Chicken Tangdi Kebab", "Chilli Chicken Drumsticks", "Hara Bara Kebab", 
+                "Chicken Reshmi Kebab", "Veg Bullet", "Chilli Chicken", "Prawns Fry (Vepudu)", "Baby Corn Manchuria", "Kodi Vepudu", "Pachimirchi Kodi Kebab", "Gobi Manchuria", 
+                "Natukodi Fry", "Paneer Manchurian", "Chicken Tikka", "Chilli Chicken Wings", "Apollo Fish (Chinese)", "Paneer Tikka", "Mirchi Bajji", "Chicken Majestic", 
+                "Masala Vada", "Veg Manchurian", "Chicken 65", "Kaju Chicken Pakoda", "Paneer 65", "Mutton Roast", "Cut Mirchi", "Coriander Chicken", "Veg Spring Roll", 
+                "Chicken Drumsticks (Oil Fry)", "Alasanda Vada", "Achari Paneer Tikka", "Chicken Wings Fry", "Cut Mirchi", "Vellulli Kodi Vepudu", "Egg 65"
+            ],
+            Sweets:[
+                "Poornam Boorelu", "Moong Dal Halwa", "Bobbattu 5''", "Carrot Halwa", "Double Ka Meetha", "Gummadikaya Halwa", "Kesari Bath", "Apricot Delight", 
+                "Semiya Payasam (Kheer)", "Gulab Jamun", "Sabudana Kheer", "Kala Jamun", "Sorakay Halwa", "Kala Jamun (Dry Gulab Jamun)", "Paramannam (Sweet Pongal)", "Millet Laddu"
+            ],
+            "Sweets & Fruits":[
+            "Suji Ka Halwa", "Millet Laddu", "Poornam Boorelu", "Carrot Halwa", "Kesari Bath", "Paramannam (Sweet Pongal)", "Sabudana Kheer", "Gajar Ka Halwa", 
+            "Banana", "Seasonal Cut Fruits", "Seasonal Mixed Fruit", "Gummadikaya Halwa", "Semiya Payasam (Kheer)", "Moong Dal Halwa", "Papaya", "Watermelon", 
+            "Sorakay Halwa", "Muskmelon"
+            ],
+            "Welcome Drinks" :[
+            "Rose Milk", "Butter Milk", "Packed Fruit Juice", "Lassi", "Badam Milk", "Seasonal Fruit Juice", "Fruit Punch"
+            ]
+        };
+
+        window.onload = () => {
+            for (let category in categories) {
+                const container = document.getElementById(category);
+                categories[category].forEach(item => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = item;
+                    checkbox.name = category;
+                    checkbox.value = item;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = item;
+                    label.innerText = item;
+
+                    container.appendChild(checkbox);
+                    container.appendChild(label);
+                    container.appendChild(document.createElement('br'));
+                });
+            }
+        };
+
+        function toggleItems(categoryId) {
+            const items = document.getElementById(categoryId);
+            items.style.display = items.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function submitDishes() {
+            const selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            let selectedDishes = [];
+
+            selectedCheckboxes.forEach((dish, index) => {
+                selectedDishes.push({
+                    name: dish.value,
+                    index: `${index + 1}/${selectedCheckboxes.length}`
+                });
+            });
+
+            let tableHtml = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Craft My Plate</th>
+                            <th>Order Code</th>
+                            <th>Selected Items</th>
+                            <th>Index</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            selectedDishes.forEach(dish => {
+                tableHtml += `
+                    <tr>
+                        <td>Craft My Plate</td>
+                        <td id="orderCodeTable">Order Code</td>
+                        <td>${dish.name}</td>
+                        <td>Index:-${dish.index}</td>
+                    </tr>
+                `;
+            });
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('selectedDishesTableContainer').innerHTML = tableHtml;
+        }
+
+        function copyToClipboard() {
+            const selectedDishesText = document.querySelector('#selectedDishesTableContainer table').innerText;
+            const textArea = document.createElement('textarea');
+            textArea.value = selectedDishesText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('Order details copied to clipboard');
+        }
+
+        function generateOrderCode() {
+            const db = document.getElementById('categoryOrder').value;
+            const l = document.getElementById('typeOrder').value;
+            const orderId = document.getElementById('orderId').value;
+            const currentDate = new Date();
+            const yy = String(currentDate.getFullYear()).slice(-2);
+            const mm = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+            const dd = ('0' + currentDate.getDate()).slice(-2);
+
+            const orderCode = `${db}/${l}/${yy}${mm}${dd}/${orderId}`;
+            document.getElementById('orderCode').innerText = orderCode;
+            const orderCodeTable = document.querySelectorAll('#orderCodeTable');
+            orderCodeTable.forEach(cell => cell.innerText = orderCode);
+        }
+    </script>
+</body>
+</html>
